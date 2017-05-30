@@ -1,0 +1,28 @@
+# https://git-scm.com/docs/gitignore
+# https://help.github.com/articles/ignoring-files
+# Example .gitignore files: https://github.com/github/gitignore
+/bower_components/
+/node_modules/
+/nwjs-sdk-v0.22.3-win-x64.zip
+/nwjs-runtime/locales/
+/nwjs-runtime/pnacl/
+/nwjs-runtime/chromedriver.exe
+/nwjs-runtime/credits.html
+/nwjs-runtime/d3dcompiler_47.dll
+/nwjs-runtime/debug.log
+/nwjs-runtime/ffmpeg.dll
+/nwjs-runtime/icudtl.dat
+/nwjs-runtime/libEGL.dll
+/nwjs-runtime/libGLESv2.dll
+/nwjs-runtime/nacl_irt_x86_64.nexe
+/nwjs-runtime/natives_blob.bin
+/nwjs-runtime/node.dll
+/nwjs-runtime/nw.dll
+/nwjs-runtime/nw.exe
+/nwjs-runtime/nw_100_percent.pak
+/nwjs-runtime/nw_200_percent.pak
+/nwjs-runtime/nw_elf.dll
+/nwjs-runtime/nwjc.exe
+/nwjs-runtime/payload.exe
+/nwjs-runtime/resources.pak
+/nwjs-runtime/snapshot_blob.bin
