@@ -26,3 +26,4 @@
 /app/payload.exe
 /app/resources.pak
 /app/snapshot_blob.bin
+/app/node_modules/
