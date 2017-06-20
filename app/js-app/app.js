@@ -32,7 +32,10 @@ var toolsApp = new Vue({
                 historyArr: []
             }
             this.tools.push(obj);
-        }
+        },
+        deleteTool: function(index) {
+            this.tools.splice(index,1);
+    }
     }
 })
 

@@ -91,7 +91,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="tool in tools">
+                                <tr v-for="(tool, index) in tools">
                                     <td>{{tool.partnumber}}</td>
                                     <td>{{tool.description}}</td>
                                     <td>{{tool.location}}</td>
@@ -101,7 +101,7 @@
                                     <td>
                                         <button class="btn-floating waves-effect green darken-1" style="line-height:0; width:30px; height:30px"><i class="material-icons" style="font-size:15px; line-height:5px;">search</i></button>
                                         <button class="btn-floating waves-effect" style="line-height:0; width:30px; height:30px"><i class="material-icons" style="font-size:15px; line-height:5px;">mode_edit</i></button>
-                                        <button class="btn-floating waves-effect red darken-1" style="line-height:0; width:30px; height:30px"><i class="material-icons" style="font-size:15px; line-height:5px;">delete</i></button>
+                                        <button @click="deleteTool(index)" class="btn-floating waves-effect red darken-1" style="line-height:0; width:30px; height:30px"><i class="material-icons" style="font-size:15px; line-height:5px;">delete</i></button>
                                     </td>
                                 </tr>
                             </tbody>
