@@ -3,25 +3,123 @@
 
 <head>
     <title>Airblue Tools Management App</title>
-    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href='./css/materialize.min.css' rel="stylesheet" type="text/css">
+
 </head>
 
 <body>
 
-    <div id="app"><h1>{{ message }}</h1></div>
-    <v-btn dark flat>Normal</v-btn>
+    <header>
+        <!-- Dropdown Structure -->
+        <ul id="dropdown1" class="dropdown-content">
+            <li v-for="item in items"><a href="#!" v-on:click='changeHeading()'>{{item}}</a></li>
+        </ul>
+        <div class="navbar-fixed">
+            <nav>
+                <div class="nav-wrapper light-blue darken-4">
+                    <a href="#!" class="brand-logo right">Airblue</a>
+                    <ul class="left">
+                        <!-- Dropdown Trigger -->
+                        <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Category<i class="material-icons right">arrow_drop_down</i></a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="tools-app">
+
+        <div class="row">
+            <div class="col s3">
+                <div class="card-panel">
+                    <div class="card-content">
+                        <div class="row">
+                            <form @submit.prevent="addTool()" id="tools-form" class="col s12">
+                                <div class="row">
+                                    <div class="input-field">
+                                        <input id="part-number" type="text" class="" name="partnumber">
+                                        <label for="part-number">Part Number</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="description" type="text" class="" name="description">
+                                        <label for="description">Description</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="abq-sno" type="text" class="" name="abqsno">
+                                        <label for="abq-sno">ABQ SNo.</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="location" type="text" class="" name="location">
+                                        <label for="location">Location</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="calib-dt" type="date" class="datepicker" name="calibdt">
+                                        <label for="calib-dt">Calibration Date</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="due-dt" type="date" class="datepicker" name="duedt">
+                                        <label for="due-dt">Due date</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <button type="submit" class="btn-floating btn-large waves-effect"><i class="material-icons">add</i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s9">
+                <div class="card-panel">
+                    <div class="card-content">
+                        <table class="highlight bordered centered">
+                            <thead>
+                                <tr>
+                                    <th colspan="7" class="center-align" style="padding:0;">
+                                        <h4>{{heading}}</h4>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>Part Number</th>
+                                    <th>Description</th>
+                                    <th>Location</th>
+                                    <th>ABQ SNo.</th>
+                                    <th>Calibration Date</th>
+                                    <th>Due Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="tool in tools">
+                                    <td>{{tool.partnumber}}</td>
+                                    <td>{{tool.description}}</td>
+                                    <td>{{tool.location}}</td>
+                                    <td>{{tool.abqsno}}</td>
+                                    <td>{{tool.calibdt}}</td>
+                                    <td>{{tool.duedt}}</td>
+                                    <td>
+                                        <button class="btn-floating waves-effect green darken-1" style="line-height:0; width:30px; height:30px"><i class="material-icons" style="font-size:15px; line-height:5px;">search</i></button>
+                                        <button class="btn-floating waves-effect" style="line-height:0; width:30px; height:30px"><i class="material-icons" style="font-size:15px; line-height:5px;">mode_edit</i></button>
+                                        <button class="btn-floating waves-effect red darken-1" style="line-height:0; width:30px; height:30px"><i class="material-icons" style="font-size:15px; line-height:5px;">delete</i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
 
 
 
 
-
-
-
-
-
-
+    <script type="text/javascript" src="js-libraries/jquery-2.2.3.min.js"></script>
+    <script src="js-libraries/materialize.min.js" type="text/javascript"></script>
     <script src="js-libraries/vue.js" type="text/javascript"></script>
-    <script src="js/app.js" type="text/javascript"></script>
+    <script src="js-app/app.js" type="text/javascript"></script>
 </body>
 
 
