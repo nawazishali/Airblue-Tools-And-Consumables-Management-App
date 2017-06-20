@@ -34,7 +34,10 @@ var toolsApp = new Vue({
             this.tools.push(obj);
         },
         deleteTool: function(index) {
-            this.tools.splice(index,1);
+            let confirmDelete = confirm("Are you sure you want to delete " + this.tools[index].description + " with Part Number: " + this.tools[index].partnumber);
+            if(confirmDelete === true){
+                this.tools.splice(index,1);
+            }
     }
     }
 })
