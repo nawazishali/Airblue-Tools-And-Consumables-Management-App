@@ -62,7 +62,8 @@
                                         <label for="due-dt">Due date</label>
                                     </div>
                                     <div class="input-field">
-                                        <button type="submit" class="btn-floating btn-large waves-effect"><i class="material-icons">add</i></button>
+                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Add new Tool"><i class="material-icons">add</i></button>
+                                        <button type="reset" class="btn-large waves-effect tooltipped" data-position="top" data-delay="50" data-tooltip="Reset Form"><i class="material-icons">clear_all</i></button>
                                     </div>
                                 </div>
                             </form>
@@ -92,16 +93,17 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(tool, index) in tools">
-                                    <td>{{tool.partnumber}}</td>
+                                    <td v-if="tool.partnumber === '123-987'" style="background-color: red;">{{tool.partnumber}}</td>
+                                    <td v-else>{{tool.partnumber}}</td>
                                     <td>{{tool.description}}</td>
                                     <td>{{tool.location}}</td>
                                     <td>{{tool.abqsno}}</td>
                                     <td>{{tool.calibdt}}</td>
                                     <td>{{tool.duedt}}</td>
                                     <td>
-                                        <button class="btn-floating waves-effect green darken-1" style="line-height:0; width:30px; height:30px"><i class="material-icons" style="font-size:15px; line-height:5px;">search</i></button>
-                                        <button class="btn-floating waves-effect" style="line-height:0; width:30px; height:30px"><i class="material-icons" style="font-size:15px; line-height:5px;">mode_edit</i></button>
-                                        <button @click="deleteTool(index)" class="btn-floating waves-effect red darken-1" style="line-height:0; width:30px; height:30px"><i class="material-icons" style="font-size:15px; line-height:5px;">delete</i></button>
+                                        <button class="btn-floating waves-effect green darken-1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="View Details"><i class="material-icons" style="font-size:15px; line-height:5px;">search</i></button>
+                                        <button class="btn-floating waves-effect tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="Edit/Update"><i class="material-icons" style="font-size:15px; line-height:5px;">mode_edit</i></button>
+                                        <button @click="deleteTool(index)" class="btn-floating waves-effect red darken-1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="Delete"><i class="material-icons" style="font-size:15px; line-height:5px;">delete</i></button>
                                     </td>
                                 </tr>
                             </tbody>
