@@ -35,7 +35,60 @@
                 <div class="card-panel">
                     <div class="card-content">
                         <div class="row">
-                            <form @submit.prevent="addTool()" id="tools-form" class="col s12">
+                            <form v-if="mode === 'update'" @submit.prevent="updateTool(editIndex)" id="tools-form" class="col s12">
+                                <div class="row">
+                                    <p>You are updating {{tools[editIndex].description}} {{tools[editIndex].abqsno}} </p>
+                                    <div class="input-field">
+                                        <input v-bind:value="tools[editIndex].location" id="location" type="text" class="" name="location">
+                                        <label for="location">Location</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="tools[editIndex].calibdt" id="calib-dt" type="date" class="datepicker" name="calibdt">
+                                        <label for="calib-dt">Calibration Date</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="tools[editIndex].duedt" id="due-dt" type="date" class="datepicker" name="duedt">
+                                        <label for="due-dt">Due date</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Update & Save"><i class="material-icons">update</i></button>
+                                        <a @click="cancel()" class="btn-large waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
+                                    </div>
+                                </div>
+                            </form>
+                            <form v-else-if="mode === 'edit'" @submit.prevent="editTool(editIndex)" id="tools-form" class="col s12">
+                                <div class="row">
+                                    <div class="input-field">
+                                        <input v-bind:value="tools[editIndex].partnumber" id="part-number" type="text" class="" name="partnumber">
+                                        <label for="part-number">Part Number</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="tools[editIndex].description" id="description" type="text" class="" name="description">
+                                        <label for="description">Description</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="tools[editIndex].abqsno" id="abq-sno" type="text" class="" name="abqsno">
+                                        <label for="abq-sno">ABQ SNo.</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="tools[editIndex].location" id="location" type="text" class="" name="location">
+                                        <label for="location">Location</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="tools[editIndex].calibdt" id="calib-dt" type="date" class="datepicker" name="calibdt">
+                                        <label for="calib-dt">Calibration Date</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="tools[editIndex].duedt" id="due-dt" type="date" class="datepicker" name="duedt">
+                                        <label for="due-dt">Due date</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Edit & Save"><i class="material-icons">mode_edit</i></button>
+                                        <a @click="cancel()" class="btn-large waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
+                                    </div>
+                                </div>
+                            </form>
+                            <form v-else @submit.prevent="addTool()" id="tools-form" class="col s12">
                                 <div class="row">
                                     <div class="input-field">
                                         <input id="part-number" type="text" class="" name="partnumber">
@@ -84,8 +137,8 @@
                                 <tr>
                                     <th>Part Number</th>
                                     <th>Description</th>
-                                    <th>Location</th>
                                     <th>ABQ SNo.</th>
+                                    <th>Location</th>
                                     <th>Calibration Date</th>
                                     <th>Due Date</th>
                                     <th></th>
@@ -93,21 +146,57 @@
                             </thead>
                             <tbody>
                                 <tr v-for="(tool, index) in tools">
-                                    <td v-if="tool.partnumber === '123-987'" style="background-color: red;">{{tool.partnumber}}</td>
-                                    <td v-else>{{tool.partnumber}}</td>
+                                    <td>{{tool.partnumber}}</td>
                                     <td>{{tool.description}}</td>
-                                    <td>{{tool.location}}</td>
                                     <td>{{tool.abqsno}}</td>
+                                    <td>{{tool.location}}</td>
                                     <td>{{tool.calibdt}}</td>
                                     <td>{{tool.duedt}}</td>
-                                    <td>
-                                        <button class="btn-floating waves-effect green darken-1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="View Details"><i class="material-icons" style="font-size:15px; line-height:5px;">search</i></button>
-                                        <button class="btn-floating waves-effect tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="Edit/Update"><i class="material-icons" style="font-size:15px; line-height:5px;">mode_edit</i></button>
+                                    <td v-if="editIndex === index && mode !== ''">
+
+                                    </td>
+                                    <td v-else>
+                                        <button @click="initiateView(index)" class="btn-floating waves-effect tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="View Details"><i class="material-icons" style="font-size:15px; line-height:5px;">search</i></button>
+                                        <button @click="initiateUpdateForm(index)" class="btn-floating waves-effect green darken-1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="Update"><i class="material-icons" style="font-size:15px; line-height:5px;">update</i></button>
+                                        <button @click="initiateEditForm(index)" class="btn-floating waves-effect orange darken-1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="Edit"><i class="material-icons" style="font-size:15px; line-height:5px;">mode_edit</i></button>
                                         <button @click="deleteTool(index)" class="btn-floating waves-effect red darken-1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="Delete"><i class="material-icons" style="font-size:15px; line-height:5px;">delete</i></button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                        <!-- Modal Structure -->
+                        <div v-if="editIndex !== null && editIndex >= 0" id="modal1" class="modal">
+                            <div class="modal-content">
+                                <div class="card-panel">
+                                    <h3 class="center-align">{{tools[editIndex].description}}</h3>
+                                    <hr></hr>
+                                    <h5 class="center-align">PN: {{tools[editIndex].partnumber}} &emsp;&emsp; SN: {{tools[editIndex].abqsno}}</h5>
+                                </div>
+                                <div class="card-panel">
+                                    <table class="highlight bordered centered">
+                                        <thead>
+                                            <tr>
+                                                <th>Date Updated</th>
+                                                <th>Location</th>
+                                                <th>Calibration Date</th>
+                                                <th>Due Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(history, index) in tools[editIndex].historyArr">
+                                                <td>some dt</td>
+                                                <td>{{history.location}}</td>
+                                                <td>{{history.calibdt}}</td>
+                                                <td>{{history.duedt}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
