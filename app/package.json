@@ -1,26 +1,27 @@
 {
-    "name": "airblue-tools-and-consumables-managment-app",
-    "version": "1.0.0",
-    "description": "Airblue Tool and consumable App made for tracking items due for Calibration or Expiring",
-    "main": "index.html",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "Nawazish Ali",
-    "license": "MIT",
-    "dependencies": {
-        "nedb": "^1.8.0"
-    },
-    "window": {
-        "fullscreen": false,
-        "kiosk": false,
-        "position": "center",
-        "resizable": true,
-        "width": 1200,
-        "height": 600,
-        "min_width": 1200,
-        "min_height": 600,
-        "title": "Airblue Tools & Consumables Management App",
-        "toolbar": true
-    }
+  "name": "airblue-tools-and-consumables-managment-app",
+  "version": "1.0.0",
+  "description": "Airblue Tool and consumable App made for tracking items due for Calibration or Expiring",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nawazish Ali",
+  "license": "MIT",
+  "dependencies": {
+    "diskdb": "^0.1.17",
+    "nedb": "^1.8.0"
+  },
+  "window": {
+    "fullscreen": false,
+    "kiosk": false,
+    "position": "center",
+    "resizable": true,
+    "width": 1200,
+    "height": 600,
+    "min_width": 1200,
+    "min_height": 600,
+    "title": "Airblue Tools & Consumables Management App",
+    "toolbar": true
+  }
 }

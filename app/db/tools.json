@@ -1,0 +1,53 @@
+[{
+    "partnumber": "123-987",
+    "description": "HydJack",
+    "location": "LHE",
+    "abqsno": "ABQ-75",
+    "calibdt": "4 June, 2017",
+    "duedt": "14 June, 2017",
+    "historyArr": [{
+        "updateDt": "25 Jun, 2017 6:06 AM",
+        "location": "KHI",
+        "calibdt": "12 June, 2017",
+        "duedt": "30 June, 2017"
+    }, {
+        "updateDt": "25 Jun, 2017 6:31 AM",
+        "location": "LHE",
+        "calibdt": "21 June, 2017",
+        "duedt": "29 June, 2017"
+    }, {
+        "updateDt": "25 Jun, 2017 11:16 PM",
+        "location": "LHE",
+        "calibdt": "4 June, 2017",
+        "duedt": "14 June, 2017"
+    }],
+    "_id": "e11531c2eb2d4fe4b414caf4bfc0cf9b"
+}, {
+    "partnumber": "123-987",
+    "description": "Hyd Jack",
+    "location": "KHI",
+    "abqsno": "ABQ-75",
+    "calibdt": "4 June, 2017",
+    "duedt": "30 June, 2017",
+    "historyArr": [{
+        "updateDt": "25 Jun, 2017 11:09 PM",
+        "location": "KHI",
+        "calibdt": "4 June, 2017",
+        "duedt": "30 June, 2017"
+    }],
+    "_id": "3c18c7f5a200485ba4366c0f2803d14e"
+}, {
+    "partnumber": "123-987",
+    "description": "Hyd Jack",
+    "location": "KHI",
+    "abqsno": "ABQ-75",
+    "calibdt": "4 June, 2017",
+    "duedt": "30 June, 2017",
+    "historyArr": [{
+        "updateDt": "25 Jun, 2017 11:09 PM",
+        "location": "KHI",
+        "calibdt": "4 June, 2017",
+        "duedt": "30 June, 2017"
+    }],
+    "_id": "3a55f468f9e747509fd7fc6d7fbd807f"
+}]

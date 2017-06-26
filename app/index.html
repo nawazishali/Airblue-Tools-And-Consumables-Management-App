@@ -5,6 +5,7 @@
     <title>Airblue Tools Management App</title>
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href='./css/materialize.min.css' rel="stylesheet" type="text/css">
+    <link href="./css/transitions.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -28,7 +29,14 @@
         </div>
     </header>
 
-    <main id="tools-app">
+    <main id="app">
+        <transition name="slide-fade" mode="out-in">
+            <component :is="app"></component>
+        </transition>
+        <button @click="changeApp()">Change App</button>
+    </main>
+
+    <template id="tool-app">
 
         <div class="row">
             <div class="col s3">
@@ -164,6 +172,11 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <demo-grid
+    :data="tools"
+    :columns="columns"
+    >
+  </demo-grid>
                         <!-- Modal Structure -->
                         <div v-if="editIndex !== null && editIndex >= 0" id="modal1" class="modal">
                             <div class="modal-content">
@@ -184,7 +197,7 @@
                                         </thead>
                                         <tbody>
                                             <tr v-for="(history, index) in tools[editIndex].historyArr">
-                                                <td>some dt</td>
+                                                <td>{{history.updateDt}}</td>
                                                 <td>{{history.location}}</td>
                                                 <td>{{history.calibdt}}</td>
                                                 <td>{{history.duedt}}</td>
@@ -201,14 +214,33 @@
                 </div>
             </div>
         </div>
-
-    </main>
-
+</template>
+    <!-- component template -->
+    <script type="text/x-template" id="grid-template">
+        <table>
+            <thead>
+                <tr>
+                    <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey == key }">
+                        {{ key | capitalize }}
+                        <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+          </span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="entry in filteredData">
+                    <td v-for="key in columns">
+                        {{entry[key]}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </script>
 
 
 
     <script type="text/javascript" src="js-libraries/jquery-2.2.3.min.js"></script>
-    <script src="js-libraries/materialize.min.js" type="text/javascript"></script>
+    <script src="js-libraries/materialize.js" type="text/javascript"></script>
     <script src="js-libraries/vue.js" type="text/javascript"></script>
     <script src="js-app/app.js" type="text/javascript"></script>
 </body>
