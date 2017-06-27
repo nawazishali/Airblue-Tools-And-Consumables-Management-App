@@ -14,7 +14,6 @@
 
 
 th {
-  color: rgba(42, 42, 42, 0.66);
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -23,7 +22,7 @@ th {
 }
 
 th.active {
-  color: rgb(44, 42, 42);
+  color: rgba(44, 42, 42, 0.66);
 }
 
 th.active .arrow {
@@ -49,4 +48,8 @@ th.active .arrow {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-top: 4px solid #464646;
+}
+
+td {
+    padding: 5px 5px;
 }

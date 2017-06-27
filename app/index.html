@@ -51,11 +51,11 @@
                                         <label for="location">Location</label>
                                     </div>
                                     <div class="input-field">
-                                        <input v-bind:value="tools[editIndex].calibdt" id="calib-dt" type="date" class="datepicker" name="calibdt">
+                                        <input v-bind:value="tools[editIndex]['Calibration Date']" id="calib-dt" type="date" class="datepicker" name="calibdt">
                                         <label for="calib-dt">Calibration Date</label>
                                     </div>
                                     <div class="input-field">
-                                        <input v-bind:value="tools[editIndex].duedt" id="due-dt" type="date" class="datepicker" name="duedt">
+                                        <input v-bind:value="tools[editIndex]['Due Date']" id="due-dt" type="date" class="datepicker" name="duedt">
                                         <label for="due-dt">Due date</label>
                                     </div>
                                     <div class="input-field">
@@ -75,7 +75,7 @@
                                         <label for="description">Description</label>
                                     </div>
                                     <div class="input-field">
-                                        <input v-bind:value="tools[editIndex].abqsno" id="abq-sno" type="text" class="" name="abqsno">
+                                        <input v-bind:value="tools[editIndex]['ABQ SNo.']" id="abq-sno" type="text" class="" name="abqsno">
                                         <label for="abq-sno">ABQ SNo.</label>
                                     </div>
                                     <div class="input-field">
@@ -83,11 +83,11 @@
                                         <label for="location">Location</label>
                                     </div>
                                     <div class="input-field">
-                                        <input v-bind:value="tools[editIndex].calibdt" id="calib-dt" type="date" class="datepicker" name="calibdt">
+                                        <input v-bind:value="tools[editIndex]['Calibration Date']" id="calib-dt" type="date" class="datepicker" name="calibdt">
                                         <label for="calib-dt">Calibration Date</label>
                                     </div>
                                     <div class="input-field">
-                                        <input v-bind:value="tools[editIndex].duedt" id="due-dt" type="date" class="datepicker" name="duedt">
+                                        <input v-bind:value="tools[editIndex]['Due Date']" id="due-dt" type="date" class="datepicker" name="duedt">
                                         <label for="due-dt">Due date</label>
                                     </div>
                                     <div class="input-field">
@@ -135,55 +135,14 @@
             <div class="col s9">
                 <div class="card-panel">
                     <div class="card-content">
-                        <table class="highlight bordered centered">
-                            <thead>
-                                <tr>
-                                    <th colspan="7" class="center-align" style="padding:0;">
-                                        <h4>{{heading}}</h4>
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <th>Part Number</th>
-                                    <th>Description</th>
-                                    <th>ABQ SNo.</th>
-                                    <th>Location</th>
-                                    <th>Calibration Date</th>
-                                    <th>Due Date</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(tool, index) in tools">
-                                    <td>{{tool.partnumber}}</td>
-                                    <td>{{tool.description}}</td>
-                                    <td>{{tool.abqsno}}</td>
-                                    <td>{{tool.location}}</td>
-                                    <td>{{tool.calibdt}}</td>
-                                    <td>{{tool.duedt}}</td>
-                                    <td v-if="editIndex === index && mode !== ''">
-
-                                    </td>
-                                    <td v-else>
-                                        <button @click="initiateView(index)" class="btn-floating waves-effect tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="View Details"><i class="material-icons" style="font-size:15px; line-height:5px;">search</i></button>
-                                        <button @click="initiateUpdateForm(index)" class="btn-floating waves-effect green darken-1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="Update"><i class="material-icons" style="font-size:15px; line-height:5px;">update</i></button>
-                                        <button @click="initiateEditForm(index)" class="btn-floating waves-effect orange darken-1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="Edit"><i class="material-icons" style="font-size:15px; line-height:5px;">mode_edit</i></button>
-                                        <button @click="deleteTool(index)" class="btn-floating waves-effect red darken-1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="Delete"><i class="material-icons" style="font-size:15px; line-height:5px;">delete</i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <demo-grid
-    :data="tools"
-    :columns="columns"
-    >
-  </demo-grid>
+                        <tool-table :data="tools" :columns="columns" :db="DB" :id="id" :mode="mode" @updateparent="updateParent"></tool-table>
                         <!-- Modal Structure -->
                         <div v-if="editIndex !== null && editIndex >= 0" id="modal1" class="modal">
                             <div class="modal-content">
                                 <div class="card-panel">
                                     <h3 class="center-align">{{tools[editIndex].description}}</h3>
                                     <hr></hr>
-                                    <h5 class="center-align">PN: {{tools[editIndex].partnumber}} &emsp;&emsp; SN: {{tools[editIndex].abqsno}}</h5>
+                                    <h5 class="center-align">PN: {{tools[editIndex].partnumber}} &emsp;&emsp; SN: {{tools[editIndex]['ABQ SNo.']}}</h5>
                                 </div>
                                 <div class="card-panel">
                                     <table class="highlight bordered centered">
@@ -197,10 +156,10 @@
                                         </thead>
                                         <tbody>
                                             <tr v-for="(history, index) in tools[editIndex].historyArr">
-                                                <td>{{history.updateDt}}</td>
+                                                <td>{{history['Date Updated']}}</td>
                                                 <td>{{history.location}}</td>
-                                                <td>{{history.calibdt}}</td>
-                                                <td>{{history.duedt}}</td>
+                                                <td>{{history['Calibration Date']}}</td>
+                                                <td>{{history['Due Date']}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -216,8 +175,8 @@
         </div>
 </template>
     <!-- component template -->
-    <script type="text/x-template" id="grid-template">
-        <table>
+    <script type="text/x-template" id="table-template">
+        <table class="highlight bordered centered">
             <thead>
                 <tr>
                     <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey == key }">
@@ -228,9 +187,18 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="entry in filteredData">
+                <tr v-for="(entry, index) in filteredData">
                     <td v-for="key in columns">
                         {{entry[key]}}
+                    </td>
+                    <td v-if="id === data[index]._id && (mode === 'edit' || mode === 'update')">
+
+                    </td>
+                    <td v-else>
+                        <button @click="initiateView(index)" class="btn-floating waves-effect tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="View Details"><i class="material-icons" style="font-size:15px; line-height:5px;">search</i></button>
+                        <button @click="initiateUpdateForm(index)" class="btn-floating waves-effect green darken-1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="Update"><i class="material-icons" style="font-size:15px; line-height:5px;">update</i></button>
+                        <button @click="initiateEditForm(index)" class="btn-floating waves-effect orange darken-1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="Edit"><i class="material-icons" style="font-size:15px; line-height:5px;">mode_edit</i></button>
+                        <button @click="initiateDelete(index)" class="btn-floating waves-effect red darken-1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="Delete"><i class="material-icons" style="font-size:15px; line-height:5px;">delete</i></button>
                     </td>
                 </tr>
             </tbody>
