@@ -10,11 +10,14 @@
 </head>
 
 <body>
+    <div id=app>
 
     <header>
         <!-- Dropdown Structure -->
         <ul id="dropdown1" class="dropdown-content">
-            <li v-for="item in items"><a href="#!" v-on:click='changeHeading()'>{{item}}</a></li>
+            <li><a href="#!" @click='changeApp("tool-app")'>Tools</a></li>
+            <li><a href="#!" @click='changeApp("pol-app")'>P.O.L</a></li>
+            <li><a href="#!" @click='changeApp("consumable-app")'>Consumables</a></li>
         </ul>
         <div class="navbar-fixed">
             <nav>
@@ -29,13 +32,40 @@
         </div>
     </header>
 
-    <main id="app">
+    <main>
         <transition name="slide-fade" mode="out-in">
             <component :is="app"></component>
         </transition>
-        <button @click="changeApp()">Change App</button>
     </main>
-
+        <div class="container">
+            <div class="row">
+                <div class="card large col s4">
+                    bmnbf
+                </div>
+                <div class="card large col s4">
+                    bmnbf
+                </div>
+                <div class="card large col s4">
+                    bmnbf
+                </div>
+            </div>
+        </div>
+    </div>
+    <template id="dashboard-app">
+        <div class="container">
+            <div class="row">
+                <div class="card col s4">
+                    bmnbf
+                </div>
+                <div class="card col s4">
+                    bmnbf
+                </div>
+                <div class="card col s4">
+                    bmnbf
+                </div>
+            </div>
+        </div>
+    </template>
     <template id="tool-app">
 
         <div class="row">
@@ -135,7 +165,28 @@
             <div class="col s9">
                 <div class="card-panel">
                     <div class="card-content">
-                        <tool-table :data="tools" :columns="columns" :db="DB" :id="id" :mode="mode" @updateparent="updateParent"></tool-table>
+                        <h5 class="center-align">{{heading}}</h5>
+                    </div>
+                </div>
+                <div class="card-panel">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="input-field col s8">
+                                <input id=searchquery type="text" name="searchquery" v-model="searchQuery">
+                                <label for="searchquery">Search</label>
+                            </div>
+                            <div class="col s4">
+                                <label>Filter</label>
+                                <select class="browser-default" id=colorquery name="colorquery" v-model="colorQuery">
+                                    <option value="" selected disabled>Choose your option</option>
+                                    <option value="" >All</option>
+                                    <option value="red darken1">Red (Less then 5 days)</option>
+                                    <option value="orange darken1">Orange (less then 10 days)</option>
+                                    <option value="yellow darken1">Yellow (less then 15 days)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <tool-table :data="tools" :columns="columns" :db="DB" :id="id" :mode="mode" :filter-key="searchQuery" :color-key="colorQuery" :due-item="dueItem" @updateparent="updateParent"></tool-table>
                         <!-- Modal Structure -->
                         <div v-if="editIndex !== null && editIndex >= 0" id="modal1" class="modal">
                             <div class="modal-content">
@@ -174,8 +225,313 @@
             </div>
         </div>
 </template>
-    <!-- component template -->
-    <script type="text/x-template" id="table-template">
+    <template id="consumable-app">
+
+        <div class="row">
+            <div class="col s3">
+                <div class="card-panel">
+                    <div class="card-content">
+                        <div class="row">
+                            <form v-if="mode === 'update'" @submit.prevent="updateConsumable(editIndex)" id="consumables-form" class="col s12">
+                                <div class="row">
+                                    <p>You are updating {{consumables[editIndex].description}} {{consumables[editIndex].batch}} </p>
+                                    <div class="input-field">
+                                        <input v-bind:value="consumables[editIndex].location" id="location" type="text" class="" name="location">
+                                        <label for="location">Location</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="consumables[editIndex]['P.O']" id="po" type="text" class="" name="po">
+                                        <label for="po">P.O</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="consumables[editIndex]['S.L.E Date']" id="sle" type="date" class="datepicker" name="sle">
+                                        <label for="sle">S.L.E Date</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Update & Save"><i class="material-icons">update</i></button>
+                                        <a @click="cancel()" class="btn-large waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
+                                    </div>
+                                </div>
+                            </form>
+                            <form v-else-if="mode === 'edit'" @submit.prevent="editConsumable(editIndex)" id="consumables-form" class="col s12">
+                                <div class="row">
+                                    <div class="input-field">
+                                        <input v-bind:value="consumables[editIndex].partnumber" id="part-number" type="text" class="" name="partnumber">
+                                        <label for="part-number">Part Number</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="consumables[editIndex].description" id="description" type="text" class="" name="description">
+                                        <label for="description">Description</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="consumables[editIndex]['Batch#']" id="batch" type="text" class="" name="batch">
+                                        <label for="batch">Batch#</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="consumables[editIndex].location" id="location" type="text" class="" name="location">
+                                        <label for="location">Location</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="consumables[editIndex]['P.O']" id="po" type="text" class="" name="po">
+                                        <label for="po">P.O</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="consumables[editIndex]['S.L.E Date']" id="sle" type="date" class="datepicker" name="sle">
+                                        <label for="sle">S.L.E Date</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Edit & Save"><i class="material-icons">mode_edit</i></button>
+                                        <a @click="cancel()" class="btn-large waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
+                                    </div>
+                                </div>
+                            </form>
+                            <form v-else @submit.prevent="addConsumable()" id="consumables-form" class="col s12">
+                                <div class="row">
+                                    <div class="input-field">
+                                        <input id="part-number" type="text" class="" name="partnumber">
+                                        <label for="part-number">Part Number</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="description" type="text" class="" name="description">
+                                        <label for="description">Description</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="batch" type="text" class="" name="batch">
+                                        <label for="batch">Batch#</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="location" type="text" class="" name="location">
+                                        <label for="location">Location</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="po" type="text" class="" name="po">
+                                        <label for="po">P.O</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="sle" type="date" class="datepicker" name="sle">
+                                        <label for="sle">S.L.E Date</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Add new consumable"><i class="material-icons">add</i></button>
+                                        <button type="reset" class="btn-large waves-effect tooltipped" data-position="top" data-delay="50" data-tooltip="Reset Form"><i class="material-icons">clear_all</i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s9">
+                <div class="card-panel">
+                    <div class="card-content">
+                        <h5 class="center-align">{{heading}}</h5>
+                    </div>
+                </div>
+                <div class="card-panel">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="input-field col s8">
+                                <input id=searchquery type="text" name="searchquery" v-model="searchQuery">
+                                <label for="searchquery">Search</label>
+                            </div>
+                            <div class="col s4">
+                                <label>Filter</label>
+                                <select class="browser-default" id=colorquery name="colorquery" v-model="colorQuery">
+                                    <option value="" selected disabled>Choose your option</option>
+                                    <option value="" >All</option>
+                                    <option value="red darken1">Red (Less then 5 days)</option>
+                                    <option value="orange darken1">Orange (less then 10 days)</option>
+                                    <option value="yellow darken1">Yellow (less then 15 days)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <tool-table :data="consumables" :columns="columns" :db="DB" :id="id" :mode="mode" :filter-key="searchQuery" :color-key="colorQuery" :due-item="dueItem" @updateparent="updateParent"></tool-table>
+                        <!-- Modal Structure -->
+                        <div v-if="editIndex !== null && editIndex >= 0" id="modal1" class="modal">
+                            <div class="modal-content">
+                                <div class="card-panel">
+                                    <h3 class="center-align">{{consumables[editIndex].description}}</h3>
+                                    <hr></hr>
+                                    <h5 class="center-align">PN: {{consumables[editIndex].partnumber}} &emsp;&emsp; Batch#: {{consumables[editIndex]['Batch#']}}</h5>
+                                </div>
+                                <div class="card-panel">
+                                    <table class="highlight bordered centered">
+                                        <thead>
+                                            <tr>
+                                                <th>Date Updated</th>
+                                                <th>Location</th>
+                                                <th>P.O</th>
+                                                <th>S.L.E Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(history, index) in consumables[editIndex].historyArr">
+                                                <td>{{history['Date Updated']}}</td>
+                                                <td>{{history.location}}</td>
+                                                <td>{{history['P.O']}}</td>
+                                                <td>{{history['S.L.E Date']}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</template>
+    <template id="pol-app">
+
+        <div class="row">
+            <div class="col s3">
+                <div class="card-panel">
+                    <div class="card-content">
+                        <div class="row">
+                            <form v-if="mode === 'update'" @submit.prevent="updatePol(editIndex)" id="pols-form" class="col s12">
+                                <div class="row">
+                                    <p>You are updating {{pols[editIndex].description}} {{pols[editIndex].grn}} </p>
+                                    <div class="input-field">
+                                        <input v-bind:value="pols[editIndex].location" id="location" type="text" class="" name="location">
+                                        <label for="location">Location</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="pols[editIndex]['S.L.E Date']" id="sle" type="date" class="datepicker" name="sle">
+                                        <label for="sle">S.L.E Date</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Update & Save"><i class="material-icons">update</i></button>
+                                        <a @click="cancel()" class="btn-large waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
+                                    </div>
+                                </div>
+                            </form>
+                            <form v-else-if="mode === 'edit'" @submit.prevent="editPol(editIndex)" id="pols-form" class="col s12">
+                                <div class="row">
+                                    <div class="input-field">
+                                        <input v-bind:value="pols[editIndex].partnumber" id="part-number" type="text" class="" name="partnumber">
+                                        <label for="part-number">Part Number</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="pols[editIndex].description" id="description" type="text" class="" name="description">
+                                        <label for="description">Description</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="pols[editIndex]['GRN#']" id="grn" type="text" class="" name="grn">
+                                        <label for="grn">GRN#</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="pols[editIndex].location" id="location" type="text" class="" name="location">
+                                        <label for="location">Location</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="pols[editIndex]['S.L.E Date']" id="sle" type="date" class="datepicker" name="sle">
+                                        <label for="sle">S.L.E Date</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Edit & Save"><i class="material-icons">mode_edit</i></button>
+                                        <a @click="cancel()" class="btn-large waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
+                                    </div>
+                                </div>
+                            </form>
+                            <form v-else @submit.prevent="addPol()" id="pols-form" class="col s12">
+                                <div class="row">
+                                    <div class="input-field">
+                                        <input id="part-number" type="text" class="" name="partnumber">
+                                        <label for="part-number">Part Number</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="description" type="text" class="" name="description">
+                                        <label for="description">Description</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="grn" type="text" class="" name="grn">
+                                        <label for="grn">GRN#</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="location" type="text" class="" name="location">
+                                        <label for="location">Location</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="sle" type="date" class="datepicker" name="sle">
+                                        <label for="sle">S.L.E Date</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Add new pol"><i class="material-icons">add</i></button>
+                                        <button type="reset" class="btn-large waves-effect tooltipped" data-position="top" data-delay="50" data-tooltip="Reset Form"><i class="material-icons">clear_all</i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s9">
+                <div class="card-panel">
+                    <div class="card-content">
+                        <h5 class="center-align">{{heading}}</h5>
+                    </div>
+                </div>
+                <div class="card-panel">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="input-field col s8">
+                                <input id=searchquery type="text" name="searchquery" v-model="searchQuery">
+                                <label for="searchquery">Search</label>
+                            </div>
+                            <div class="col s4">
+                                <label>Filter</label>
+                                <select class="browser-default" id=colorquery name="colorquery" v-model="colorQuery">
+                                    <option value="" selected disabled>Choose your option</option>
+                                    <option value="" >All</option>
+                                    <option value="red darken1">Red (Less then 5 days)</option>
+                                    <option value="orange darken1">Orange (less then 10 days)</option>
+                                    <option value="yellow darken1">Yellow (less then 15 days)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <tool-table :data="pols" :columns="columns" :db="DB" :id="id" :mode="mode" :filter-key="searchQuery" :color-key="colorQuery" :due-item="dueItem" @updateparent="updateParent"></tool-table>
+                        <!-- Modal Structure -->
+                        <div v-if="editIndex !== null && editIndex >= 0" id="modal1" class="modal">
+                            <div class="modal-content">
+                                <div class="card-panel">
+                                    <h3 class="center-align">{{pols[editIndex].description}}</h3>
+                                    <hr></hr>
+                                    <h5 class="center-align">PN: {{pols[editIndex].partnumber}} &emsp;&emsp; SN: {{pols[editIndex]['GRN#']}}</h5>
+                                </div>
+                                <div class="card-panel">
+                                    <table class="highlight bordered centered">
+                                        <thead>
+                                            <tr>
+                                                <th>Date Updated</th>
+                                                <th>Location</th>
+                                                <th>GRN#</th>
+                                                <th>S.L.E Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(history, index) in pols[editIndex].historyArr">
+                                                <td>{{history['Date Updated']}}</td>
+                                                <td>{{history.location}}</td>
+                                                <td>{{history['GRN#']}}</td>
+                                                <td>{{history['S.L.E Date']}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</template>
+    <template id="table-template">
         <table class="highlight bordered centered">
             <thead>
                 <tr>
@@ -188,14 +544,14 @@
             </thead>
             <tbody>
                 <tr v-for="(entry, index) in filteredData">
-                    <td v-for="key in columns">
+                    <td v-for="key in columns" :class="filteredData[index].color">
                         {{entry[key]}}
                     </td>
-                    <td v-if="id === data[index]._id && (mode === 'edit' || mode === 'update')">
+                    <td v-if="id === filteredData[index]._id && (mode === 'edit' || mode === 'update')">
 
                     </td>
                     <td v-else>
-                        <button @click="initiateView(index)" class="btn-floating waves-effect tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="View Details"><i class="material-icons" style="font-size:15px; line-height:5px;">search</i></button>
+                        <button @click="initiateView(index)" class="btn-floating waves-effect blue darken1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="View Details"><i class="material-icons" style="font-size:15px; line-height:5px;">search</i></button>
                         <button @click="initiateUpdateForm(index)" class="btn-floating waves-effect green darken-1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="Update"><i class="material-icons" style="font-size:15px; line-height:5px;">update</i></button>
                         <button @click="initiateEditForm(index)" class="btn-floating waves-effect orange darken-1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="Edit"><i class="material-icons" style="font-size:15px; line-height:5px;">mode_edit</i></button>
                         <button @click="initiateDelete(index)" class="btn-floating waves-effect red darken-1 tooltipped" style="line-height:0; width:30px; height:30px" data-position="top" data-delay="50" data-tooltip="Delete"><i class="material-icons" style="font-size:15px; line-height:5px;">delete</i></button>
@@ -203,7 +559,7 @@
                 </tr>
             </tbody>
         </table>
-    </script>
+    </template>
 
 
 

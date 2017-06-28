@@ -1,0 +1,147 @@
+<template id="pol-app">
+
+        <div class="row">
+            <div class="col s3">
+                <div class="card-panel">
+                    <div class="card-content">
+                        <div class="row">
+                            <form v-if="mode === 'update'" @submit.prevent="updatePol(editIndex)" id="pols-form" class="col s12">
+                                <div class="row">
+                                    <p>You are updating {{pols[editIndex].description}} {{pols[editIndex].grn}} </p>
+                                    <div class="input-field">
+                                        <input v-bind:value="pols[editIndex].location" id="location" type="text" class="" name="location">
+                                        <label for="location">Location</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="pols[editIndex]['S.L.E Date']" id="sle" type="date" class="datepicker" name="sle">
+                                        <label for="sle">S.L.E Date</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <button type="submit" class="btn-large waves-effect poltipped center-align" data-position="top" data-delay="50" data-poltip="Update & Save"><i class="material-icons">update</i></button>
+                                        <a @click="cancel()" class="btn-large waves-effect orange darken-1 poltipped center-align" data-position="top" data-delay="50" data-poltip="Cancel"><i class="material-icons">cancel</i></a>
+                                    </div>
+                                </div>
+                            </form>
+                            <form v-else-if="mode === 'edit'" @submit.prevent="editPol(editIndex)" id="pols-form" class="col s12">
+                                <div class="row">
+                                    <div class="input-field">
+                                        <input v-bind:value="pols[editIndex].partnumber" id="part-number" type="text" class="" name="partnumber">
+                                        <label for="part-number">Part Number</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="pols[editIndex].description" id="description" type="text" class="" name="description">
+                                        <label for="description">Description</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="pols[editIndex]['GRN#']" id="grn" type="text" class="" name="grn">
+                                        <label for="grn">GRN#</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="pols[editIndex].location" id="location" type="text" class="" name="location">
+                                        <label for="location">Location</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input v-bind:value="pols[editIndex]['S.L.E Date']" id="sle" type="date" class="datepicker" name="sle">
+                                        <label for="sle">S.L.E Date</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <button type="submit" class="btn-large waves-effect poltipped center-align" data-position="top" data-delay="50" data-poltip="Edit & Save"><i class="material-icons">mode_edit</i></button>
+                                        <a @click="cancel()" class="btn-large waves-effect orange darken-1 poltipped center-align" data-position="top" data-delay="50" data-poltip="Cancel"><i class="material-icons">cancel</i></a>
+                                    </div>
+                                </div>
+                            </form>
+                            <form v-else @submit.prevent="addPol()" id="pols-form" class="col s12">
+                                <div class="row">
+                                    <div class="input-field">
+                                        <input id="part-number" type="text" class="" name="partnumber">
+                                        <label for="part-number">Part Number</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="description" type="text" class="" name="description">
+                                        <label for="description">Description</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="grn" type="text" class="" name="grn">
+                                        <label for="grn">GRN#</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="location" type="text" class="" name="location">
+                                        <label for="location">Location</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <input id="sle" type="date" class="datepicker" name="sle">
+                                        <label for="sle">S.L.E Date</label>
+                                    </div>
+                                    <div class="input-field">
+                                        <button type="submit" class="btn-large waves-effect poltipped center-align" data-position="top" data-delay="50" data-poltip="Add new pol"><i class="material-icons">add</i></button>
+                                        <button type="reset" class="btn-large waves-effect poltipped" data-position="top" data-delay="50" data-poltip="Reset Form"><i class="material-icons">clear_all</i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col s9">
+                <div class="card-panel">
+                    <div class="card-content">
+                        <h5 class="center-align">{{heading}}</h5>
+                    </div>
+                </div>
+                <div class="card-panel">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="input-field col s8">
+                                <input id=searchquery type="text" name="searchquery" v-model="searchQuery">
+                                <label for="searchquery">Search</label>
+                            </div>
+                            <div class="col s4">
+                                <label>Filter</label>
+                                <select class="browser-default" id=colorquery name="colorquery" v-model="colorQuery">
+                                    <option value="" selected disabled>Choose your option</option>
+                                    <option value="" >All</option>
+                                    <option value="red darken1">Red (Less then 5 days)</option>
+                                    <option value="orange darken1">Orange (less then 10 days)</option>
+                                    <option value="yellow darken1">Yellow (less then 15 days)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <pol-table :data="pols" :columns="columns" :db="DB" :id="id" :mode="mode" :filter-key="searchQuery" :color-key="colorQuery" @updateparent="updateParent"></pol-table>
+                        <!-- Modal Structure -->
+                        <div v-if="editIndex !== null && editIndex >= 0" id="modal1" class="modal">
+                            <div class="modal-content">
+                                <div class="card-panel">
+                                    <h3 class="center-align">{{pols[editIndex].description}}</h3>
+                                    <hr></hr>
+                                    <h5 class="center-align">PN: {{pols[editIndex].partnumber}} &emsp;&emsp; SN: {{pols[editIndex]['GRN#']}}</h5>
+                                </div>
+                                <div class="card-panel">
+                                    <table class="highlight bordered centered">
+                                        <thead>
+                                            <tr>
+                                                <th>Date Updated</th>
+                                                <th>Location</th>
+                                                <th>GRN#</th>
+                                                <th>S.L.E Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(history, index) in pols[editIndex].historyArr">
+                                                <td>{{history['Date Updated']}}</td>
+                                                <td>{{history.location}}</td>
+                                                <td>{{history['GRN#']}}</td>
+                                                <td>{{history['S.L.E Date']}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</template>
