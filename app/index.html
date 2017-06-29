@@ -25,7 +25,8 @@
                     <a href="#!" class="brand-logo right">Airblue</a>
                     <ul class="left">
                         <!-- Dropdown Trigger -->
-                        <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Category<i class="material-icons right">arrow_drop_down</i></a></li>
+                        <li><a href="#!" @click='changeApp("dashboard-app")'>DASHBOARD</a></li>
+                        <li><a class="dropdown-button" href="#!" data-activates="dropdown1">CATEGORY<i class="material-icons right">arrow_drop_down</i></a></li>
                     </ul>
                 </div>
             </nav>
@@ -34,37 +35,54 @@
 
     <main>
         <transition name="slide-fade" mode="out-in">
-            <component :is="app"></component>
+            <component :is="app" @changeapp="changeApp"></component>
         </transition>
     </main>
-        <div class="container">
-            <div class="row">
-                <div class="card large col s4">
-                    bmnbf
+    </div>
+    <template id="dashboard-app">
+        <div class="">
+            <div class="row center-align">
+                <div class="card-panel">
+                    <h2>Welcome to Shelf Life Management App</h2>
+                    <p>Below are some highlights from inventory, Click on a Category in order to update or view items</p>
                 </div>
-                <div class="card large col s4">
-                    bmnbf
+            </div>
+    <div class="row">
+        <div class="col s4">
+            <div class="card-panel hoverable" style="cursor: pointer" @click="changeApp('tool-app')">
+                <div class="card-content">
+                    <h4 class="center-align">TOOLS</h4>
+                    <p>Total number of items in this Category <span data-badge-caption="items" class="new badge blue darken-1">{{tools.five+tools.ten+tools.fifteen+tools.rest}}</span></p>
+                    <p><span data-badge-caption="items" class="new badge red darken-1">{{tools.five}}</span> Due with in 5 days</p>
+                    <p><span data-badge-caption="items" class="new badge orange darken-1">{{tools.ten}}</span> Due with in 10 days</p>
+                    <p><span data-badge-caption="items" class="new badge yellow darken-1">{{tools.fifteen}}</span> Due with in 15 days</p>
                 </div>
-                <div class="card large col s4">
-                    bmnbf
+            </div>
+        </div>
+        <div class="col s4">
+            <div class="card-panel hoverable" style="cursor: pointer" @click="changeApp('consumable-app')">
+                <div class="card-content">
+                    <h4 class="center-align">CONSUMABLES</h4>
+                    <p>Total number of items in this Category <span data-badge-caption="items" class="new badge blue darken-1">{{consumables.five+consumables.ten+consumables.fifteen+consumables.rest}}</span></p>
+                    <p><span data-badge-caption="items" class="new badge red darken-1">{{consumables.five}}</span> Due with in 5 days</p>
+                    <p><span data-badge-caption="items" class="new badge orange darken-1">{{consumables.ten}}</span> Due with in 10 days</p>
+                    <p><span data-badge-caption="items" class="new badge yellow darken-1">{{consumables.fifteen}}</span> Due with in 15 days</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s4">
+            <div class="card-panel hoverable" style="cursor: pointer" @click="changeApp('pol-app')">
+                <div class="card-content">
+                    <h4 class="center-align">P.O.L</h4>
+                    <p>Total number of items in this Category <span data-badge-caption="items" class="new badge blue darken-1">{{pols.five+pols.ten+pols.fifteen+pols.rest}}</span></p>
+                    <p><span data-badge-caption="items" class="new badge red darken-1">{{pols.five}}</span> Due with in 5 days</p>
+                    <p><span data-badge-caption="items" class="new badge orange darken-1">{{pols.ten}}</span> Due with in 10 days</p>
+                    <p><span data-badge-caption="items" class="new badge yellow darken-1">{{pols.fifteen}}</span> Due with in 15 days</p>
                 </div>
             </div>
         </div>
     </div>
-    <template id="dashboard-app">
-        <div class="container">
-            <div class="row">
-                <div class="card col s4">
-                    bmnbf
-                </div>
-                <div class="card col s4">
-                    bmnbf
-                </div>
-                <div class="card col s4">
-                    bmnbf
-                </div>
-            </div>
-        </div>
+</div>
     </template>
     <template id="tool-app">
 
@@ -180,9 +198,9 @@
                                 <select class="browser-default" id=colorquery name="colorquery" v-model="colorQuery">
                                     <option value="" selected disabled>Choose your option</option>
                                     <option value="" >All</option>
-                                    <option value="red darken1">Red (Less then 5 days)</option>
-                                    <option value="orange darken1">Orange (less then 10 days)</option>
-                                    <option value="yellow darken1">Yellow (less then 15 days)</option>
+                                    <option value="red darken-1">Red (Less then 5 days)</option>
+                                    <option value="orange darken-1">Orange (less then 10 days)</option>
+                                    <option value="yellow darken-1">Yellow (less then 15 days)</option>
                                 </select>
                             </div>
                         </div>
@@ -339,9 +357,9 @@
                                 <select class="browser-default" id=colorquery name="colorquery" v-model="colorQuery">
                                     <option value="" selected disabled>Choose your option</option>
                                     <option value="" >All</option>
-                                    <option value="red darken1">Red (Less then 5 days)</option>
-                                    <option value="orange darken1">Orange (less then 10 days)</option>
-                                    <option value="yellow darken1">Yellow (less then 15 days)</option>
+                                    <option value="red darken-1">Red (Less then 5 days)</option>
+                                    <option value="orange darken-1">Orange (less then 10 days)</option>
+                                    <option value="yellow darken-1">Yellow (less then 15 days)</option>
                                 </select>
                             </div>
                         </div>
@@ -486,9 +504,9 @@
                                 <select class="browser-default" id=colorquery name="colorquery" v-model="colorQuery">
                                     <option value="" selected disabled>Choose your option</option>
                                     <option value="" >All</option>
-                                    <option value="red darken1">Red (Less then 5 days)</option>
-                                    <option value="orange darken1">Orange (less then 10 days)</option>
-                                    <option value="yellow darken1">Yellow (less then 15 days)</option>
+                                    <option value="red darken-1">Red (Less then 5 days)</option>
+                                    <option value="orange darken-1">Orange (less then 10 days)</option>
+                                    <option value="yellow darken-1">Yellow (less then 15 days)</option>
                                 </select>
                             </div>
                         </div>

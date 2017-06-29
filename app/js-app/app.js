@@ -47,11 +47,11 @@ function highlightNSortDueItems(arr, dueItem) {
         let currentDt = Date.parse(new Date());
         let remainingDays = Math.round((dueDt - currentDt)/oneDay);
         if (remainingDays <= 5) {
-            item.color = 'red darken1';
+            item.color = 'red darken-1';
         } else if(remainingDays <= 10){
-            item.color = 'orange darken1';
+            item.color = 'orange darken-1';
         } else if(remainingDays <= 15){
-            item.color = 'yellow darken1';
+            item.color = 'yellow darken-1';
         }
     });
     arr.sort(function (a, b) {
@@ -61,6 +61,30 @@ function highlightNSortDueItems(arr, dueItem) {
     });
     return arr;
 };
+function remainingDays(arr, dueItem) {
+    var obj = {
+        five: 0,
+        ten: 0,
+        fifteen: 0,
+        rest: 0
+    };
+    arr.forEach((item) => {
+        let oneDay = 24*60*60*1000;
+        let dueDt = Date.parse(item[dueItem]);
+        let currentDt = Date.parse(new Date());
+        let remainingDays = Math.round((dueDt - currentDt) / oneDay);
+        if (remainingDays <= 5) {
+            obj.five += 1;
+        } else if (remainingDays <= 10) {
+            obj.ten += 1;
+        } else if (remainingDays <= 15) {
+            obj.fifteen += 1;
+        } else {
+            obj.rest += 1;
+        }
+    });
+    return obj;
+}
 
 Vue.component('tool-app', {
     template: '#tool-app',
@@ -582,6 +606,23 @@ Vue.component('pol-app', {
 
     }
 });
+Vue.component('dashboard-app', {
+    template: '#dashboard-app',
+    data: function(){
+        return {
+            tools: remainingDays(DB.tools.find(), 'Due Date'),
+            consumables: remainingDays(DB.consumables.find(), 'S.L.E Date'),
+            pols: remainingDays(DB.pols.find(), 'S.L.E Date'),
+            app: ''
+        }
+    },
+    methods: {
+        changeApp: function (app) {
+            this.app = app;
+            this.$emit('changeapp', app);
+        }
+    }
+})
 // register the grid component
 Vue.component('tool-table', {
     template: '#table-template',
@@ -727,14 +768,12 @@ Vue.component('tool-table', {
 var app = new Vue({
     el: '#app',
     data: {
-        app: 'tool-app',
+        app: 'dashboard-app',
         filterQuery: ''
     },
     methods: {
         changeApp: function (targetApp) {
             this.app = targetApp;
-            console.log(targetApp);
-            console.log(this.app);
             this.$nextTick(function () {
                 setTimeout(function () {
                     $('.datepicker').pickadate({
