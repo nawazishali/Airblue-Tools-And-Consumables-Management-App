@@ -1,7 +1,14 @@
+let gui = require('nw.gui');
 let DB = require('diskdb');
-DB = DB.connect('./db', ['tools', 'consumables', 'pols']);
+DbLocation = DB.connect('./db',['dbLoc']);
 
-
+function loadDb(){
+    dir = DbLocation.dbLoc.findOne();
+    if((typeof dir) !== 'undefined'){
+        DB = DB.connect(dir.dir, ['tools', 'consumables', 'pols']);
+    }
+};
+loadDb();
 function formatDate(date) {
     let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     let day = date.getDate();
@@ -171,7 +178,8 @@ Vue.component('tool-app', {
             let tool = DB.tools.findOne({
                 _id: this.id
             });
-            tool.location = toolsForm.location.value;
+            if(Date.parse(tool['Due Date']) < Date.parse(toolsForm.duedt.value) && Date.parse(tool['Calibration Date']) < Date.parse(toolsForm.calibdt.value)){
+                tool.location = toolsForm.location.value;
             tool['Calibration Date'] = toolsForm.calibdt.value;
             tool['Due Date'] = toolsForm.duedt.value;
             let history = {
@@ -203,6 +211,9 @@ Vue.component('tool-app', {
                     delay: 50
                 });
             })
+            } else{
+                alert('In order to update this entry you must to provide updated Calibration And Due Dates');
+            }
         },
         deleteTool: function () {
             let tool = DB.tools.findOne({
@@ -345,7 +356,8 @@ Vue.component('consumable-app', {
             let consumable = DB.consumables.findOne({
                 _id: this.id
             });
-            consumable.location = consumablesForm.location.value;
+            if(Date.parse(consumable['S.L.E Date']) < Date.parse(consumablesForm.sle.value) ){
+               consumable.location = consumablesForm.location.value;
             consumable['P.O'] = consumablesForm.po.value;
             consumable['S.L.E Date'] = consumablesForm.sle.value;
             let history = {
@@ -377,6 +389,9 @@ Vue.component('consumable-app', {
                     delay: 50
                 });
             })
+            } else {
+               alert('In order to update this entry you need to provide a date after '+ consumable['S.L.E Date'] );
+            }
         },
         deleteConsumable: function () {
             let consumable = DB.consumables.findOne({
@@ -517,7 +532,8 @@ Vue.component('pol-app', {
             let pol = DB.pols.findOne({
                 _id: this.id
             });
-            pol.location = polsForm.location.value;
+            if(Date.parse(pol['S.L.E Date']) < Date.parse(polsForm.sle.value) ){
+                pol.location = polsForm.location.value;
             pol['GRN#'] = polsForm.grn.value;
             pol['S.L.E Date'] = polsForm.sle.value;
             let history = {
@@ -549,6 +565,9 @@ Vue.component('pol-app', {
                     delay: 50
                 });
             })
+            } else{
+                alert('In order to update this entry you need to provide a date after '+ pol['S.L.E Date'] );
+            }
         },
         deletePol: function () {
             let pol = DB.pols.findOne({
@@ -608,6 +627,7 @@ Vue.component('pol-app', {
 });
 Vue.component('dashboard-app', {
     template: '#dashboard-app',
+    props: ['dbLoc'],
     data: function(){
         return {
             tools: remainingDays(DB.tools.find(), 'Due Date'),
@@ -620,6 +640,16 @@ Vue.component('dashboard-app', {
         changeApp: function (app) {
             this.app = app;
             this.$emit('changeapp', app);
+        },
+        getDir: function() {
+            let file = document.getElementById('file');
+            strFile = file.value;
+            intPos = strFile.lastIndexOf("\\");
+            strDirectory = strFile.substring(0, intPos);
+            arr = strDirectory.split(';');
+            dir = arr[arr.length-1].replace(/\\/g, "/");
+            DbLocation.dbLoc.save({dir: dir});
+            location.reload();
         }
     }
 })
@@ -768,6 +798,7 @@ Vue.component('tool-table', {
 var app = new Vue({
     el: '#app',
     data: {
+        dbLoc: DbLocation.dbLoc.findOne(),
         app: 'dashboard-app',
         filterQuery: ''
     },
@@ -785,11 +816,6 @@ var app = new Vue({
                         delay: 50
                     });
                     Materialize.updateTextFields();
-                    /*$('select').material_select();
-                    $('select').on('change', event => {
-                        choice = event.currentTarget.value;
-                        this.filterQuery = choice;
-                    });*/
                 }, 850);
 
             })
@@ -797,6 +823,13 @@ var app = new Vue({
     }
 });
 
+function Print() {
+    $('.tooltipped').tooltip('remove');
+    window.print();
+    $('.tooltipped').tooltip({
+        delay: 50
+    });
+}
 
 $(document).ready(function () {
     $('.datepicker').pickadate({

@@ -1,3 +1,32 @@
+@media print {
+    body {
+        visibility: hidden;
+        -webkit-print-color-adjust: exact !important;
+        padding: 0 !important;
+    }
+    .printable {
+        visibility: visible;
+    }
+    .printable {
+        position: absolute !important;
+        width: 99.9% !important;
+        margin: 0 auto !important;
+    }
+    .s9 {
+        position: absolute !important;
+        width: 99.9% !important;
+        margin: 0 auto !important;
+    }
+}
+
+@page {
+    size: A4 landscape;
+    margin: 5mm;
+}
+
+
+
+
 /* Enter and leave animations can use different */
 /* durations and timing functions.              */
 .slide-fade-enter-active, .slide-fade-leave-active {
@@ -54,3 +83,4 @@ td {
     padding: 5px 5px;
     font-size: 13px;
 }
+
