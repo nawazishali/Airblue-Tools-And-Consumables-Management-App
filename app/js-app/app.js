@@ -1,6 +1,6 @@
 let gui = require('nw.gui');
 let DB = require('diskdb');
-DbLocation = DB.connect('./db', ['dbLoc']);
+let DbLocation = DB.connect('./db', ['dbLoc']);
 
 function loadDb() {
     dir = DbLocation.dbLoc.findOne();
@@ -659,7 +659,6 @@ Vue.component('dashboard-app', {
         }
     }
 })
-// register the grid component
 Vue.component('tool-table', {
     template: '#table-template',
     props: {
@@ -825,6 +824,11 @@ var app = new Vue({
                 }, 850);
 
             })
+        },
+        updateDbLoc: function (){
+            DbLocation.dbLoc.remove();
+            DbLocation = DB.connect('./db', ['dbLoc']);
+            this.dbLoc = DbLocation.dbLoc.findOne();
         }
     }
 });

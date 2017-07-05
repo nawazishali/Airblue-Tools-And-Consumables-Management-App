@@ -25,7 +25,8 @@
                         <ul class="left">
                             <!-- Dropdown Trigger -->
                             <li><a style="color: #252f86;" href="#!" @click='changeApp("dashboard-app")'>DASHBOARD</a></li>
-                            <li><a style="color: #252f86;" class="dropdown-button" href="#!" data-activates="dropdown1">CATEGORY<i class="material-icons right">arrow_drop_down</i></a></li>
+                            <li v-if="(typeof dbLoc) !== 'undefined'"><a style="color: #252f86;" class="dropdown-button" href="#!" data-activates="dropdown1">CATEGORY<i class="material-icons right">arrow_drop_down</i></a></li>
+                            <li><a style="color: #252f86;" href="#!" @click="updateDbLoc()" >UPDATE DB LOCATION</a></li>
                             <li><a style="color: #252f86;" href="#about" >ABOUT</a></li>
                         </ul>
                     </div>
