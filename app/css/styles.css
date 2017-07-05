@@ -12,7 +12,11 @@
         width: 99.9% !important;
         margin: 0 auto !important;
     }
-    .s9 {
+    .card-panel {
+        padding: 0;
+        margin: 0;
+    }
+    .s10 {
         position: absolute !important;
         width: 99.9% !important;
         margin: 0 auto !important;
@@ -22,23 +26,6 @@
 @page {
     size: A4 landscape;
     margin: 5mm;
-}
-
-
-
-
-/* Enter and leave animations can use different */
-/* durations and timing functions.              */
-.slide-fade-enter-active, .slide-fade-leave-active {
-  transition: all .8s ease;
-}
-/*.slide-fade-leave-active {
-  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}*/
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active for <2.1.8 */ {
-  transform: translateX(300px);
-  opacity: 0;
 }
 
 
@@ -84,3 +71,36 @@ td {
     font-size: 13px;
 }
 
+#modal1 {
+    max-height: 85%;
+}
+
+form .btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+}
+
+.overflow-control {
+    height: 230px;
+    overflow-y: scroll;
+}
+
+label {
+    font-size: 13px !important;
+}
+
+
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active, .slide-fade-leave-active {
+  transition: all .8s ease;
+}
+/*.slide-fade-leave-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}*/
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for <2.1.8 */ {
+  transform: translateX(300px);
+  opacity: 0;
+}

@@ -1,14 +1,15 @@
 let gui = require('nw.gui');
 let DB = require('diskdb');
-DbLocation = DB.connect('./db',['dbLoc']);
+DbLocation = DB.connect('./db', ['dbLoc']);
 
-function loadDb(){
+function loadDb() {
     dir = DbLocation.dbLoc.findOne();
-    if((typeof dir) !== 'undefined'){
+    if ((typeof dir) !== 'undefined') {
         DB = DB.connect(dir.dir, ['tools', 'consumables', 'pols']);
     }
 };
 loadDb();
+
 function formatDate(date) {
     let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     let day = date.getDate();
@@ -47,17 +48,18 @@ function formatDate(date) {
 
     return day + ' ' + monthNames[monthIndex] + ', ' + year + ' ' + time;
 };
+
 function highlightNSortDueItems(arr, dueItem) {
-    arr.forEach((item)=>{
-        let oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+    arr.forEach((item) => {
+        let oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
         let dueDt = Date.parse(item[dueItem]);
         let currentDt = Date.parse(new Date());
-        let remainingDays = Math.round((dueDt - currentDt)/oneDay);
+        let remainingDays = Math.round((dueDt - currentDt) / oneDay);
         if (remainingDays <= 5) {
             item.color = 'red darken-1';
-        } else if(remainingDays <= 10){
+        } else if (remainingDays <= 10) {
             item.color = 'orange darken-1';
-        } else if(remainingDays <= 15){
+        } else if (remainingDays <= 15) {
             item.color = 'yellow darken-1';
         }
     });
@@ -68,6 +70,7 @@ function highlightNSortDueItems(arr, dueItem) {
     });
     return arr;
 };
+
 function remainingDays(arr, dueItem) {
     var obj = {
         five: 0,
@@ -76,7 +79,7 @@ function remainingDays(arr, dueItem) {
         rest: 0
     };
     arr.forEach((item) => {
-        let oneDay = 24*60*60*1000;
+        let oneDay = 24 * 60 * 60 * 1000;
         let dueDt = Date.parse(item[dueItem]);
         let currentDt = Date.parse(new Date());
         let remainingDays = Math.round((dueDt - currentDt) / oneDay);
@@ -178,40 +181,40 @@ Vue.component('tool-app', {
             let tool = DB.tools.findOne({
                 _id: this.id
             });
-            if(Date.parse(tool['Due Date']) < Date.parse(toolsForm.duedt.value) && Date.parse(tool['Calibration Date']) < Date.parse(toolsForm.calibdt.value)){
+            if (Date.parse(tool['Due Date']) < Date.parse(toolsForm.duedt.value) && Date.parse(tool['Calibration Date']) < Date.parse(toolsForm.calibdt.value)) {
                 tool.location = toolsForm.location.value;
-            tool['Calibration Date'] = toolsForm.calibdt.value;
-            tool['Due Date'] = toolsForm.duedt.value;
-            let history = {
-                'Date Updated': formatDate(new Date()),
-                location: tool.location,
-                'Calibration Date': tool['Calibration Date'],
-                'Due Date': tool['Due Date']
-            };
-            tool.historyArr.push(history);
-            DB.tools.update({
-                _id: this.id
-            }, tool, {
-                multi: false,
-                upsert: false
-            });
-            this.tools = highlightNSortDueItems(DB.tools.find(), 'Due Date');
+                tool['Calibration Date'] = toolsForm.calibdt.value;
+                tool['Due Date'] = toolsForm.duedt.value;
+                let history = {
+                    'Date Updated': formatDate(new Date()),
+                    location: tool.location,
+                    'Calibration Date': tool['Calibration Date'],
+                    'Due Date': tool['Due Date']
+                };
+                tool.historyArr.push(history);
+                DB.tools.update({
+                    _id: this.id
+                }, tool, {
+                    multi: false,
+                    upsert: false
+                });
+                this.tools = highlightNSortDueItems(DB.tools.find(), 'Due Date');
 
-            $('.tooltipped').tooltip('remove'); //Tooltip kept showing constatly after the form was replaced, so removed it.
-            this.mode = "";
-            this.id = "";
-            this.$nextTick(function () {
-                $('.datepicker').pickadate({
-                    closeOnSelect: true,
-                    selectMonths: true, // Creates a dropdown to control month
-                    selectYears: 15 // Creates a dropdown of 15 years to control year
-                });
-                //restoring tooltip functionality
-                $('.tooltipped').tooltip({
-                    delay: 50
-                });
-            })
-            } else{
+                $('.tooltipped').tooltip('remove'); //Tooltip kept showing constatly after the form was replaced, so removed it.
+                this.mode = "";
+                this.id = "";
+                this.$nextTick(function () {
+                    $('.datepicker').pickadate({
+                        closeOnSelect: true,
+                        selectMonths: true, // Creates a dropdown to control month
+                        selectYears: 15 // Creates a dropdown of 15 years to control year
+                    });
+                    //restoring tooltip functionality
+                    $('.tooltipped').tooltip({
+                        delay: 50
+                    });
+                })
+            } else {
                 alert('In order to update this entry you must to provide updated Calibration And Due Dates');
             }
         },
@@ -264,7 +267,7 @@ Vue.component('tool-app', {
             this.mode = data.updateMode;
             this.editIndex = data.updateIndex;
             this.id = data.updateId;
-            if(this.mode === "delete"){
+            if (this.mode === "delete") {
                 this.deleteTool();
             }
         }
@@ -356,41 +359,42 @@ Vue.component('consumable-app', {
             let consumable = DB.consumables.findOne({
                 _id: this.id
             });
-            if(Date.parse(consumable['S.L.E Date']) < Date.parse(consumablesForm.sle.value) ){
-               consumable.location = consumablesForm.location.value;
-            consumable['P.O'] = consumablesForm.po.value;
-            consumable['S.L.E Date'] = consumablesForm.sle.value;
-            let history = {
-                'Date Updated': formatDate(new Date()),
-                location: consumable.location,
-                'P.O': consumable['P.O'],
-                'S.L.E Date': consumable['S.L.E Date']
-            };
-            consumable.historyArr.push(history);
-            DB.consumables.update({
-                _id: this.id
-            }, consumable, {
-                multi: false,
-                upsert: false
-            });
-            this.consumables = highlightNSortDueItems(DB.consumables.find(), 'S.L.E Date');
+            if (Date.parse(consumable['S.L.E Date']) < Date.parse(consumablesForm.sle.value)) {
+                consumable.location = consumablesForm.location.value;
+                consumable['Batch#'] = consumablesForm.batch.value;
+                consumable['P.O'] = consumablesForm.po.value;
+                consumable['S.L.E Date'] = consumablesForm.sle.value;
+                let history = {
+                    'Date Updated': formatDate(new Date()),
+                    location: consumable.location,
+                    'P.O': consumable['P.O'],
+                    'S.L.E Date': consumable['S.L.E Date']
+                };
+                consumable.historyArr.push(history);
+                DB.consumables.update({
+                    _id: this.id
+                }, consumable, {
+                    multi: false,
+                    upsert: false
+                });
+                this.consumables = highlightNSortDueItems(DB.consumables.find(), 'S.L.E Date');
 
-            $('.tooltipped').tooltip('remove'); //Tooltip kept showing constatly after the form was replaced, so removed it.
-            this.mode = "";
-            this.id = "";
-            this.$nextTick(function () {
-                $('.datepicker').pickadate({
-                    closeOnSelect: true,
-                    selectMonths: true, // Creates a dropdown to control month
-                    selectYears: 15 // Creates a dropdown of 15 years to control year
-                });
-                //restoring tooltip functionality
-                $('.tooltipped').tooltip({
-                    delay: 50
-                });
-            })
+                $('.tooltipped').tooltip('remove'); //Tooltip kept showing constatly after the form was replaced, so removed it.
+                this.mode = "";
+                this.id = "";
+                this.$nextTick(function () {
+                    $('.datepicker').pickadate({
+                        closeOnSelect: true,
+                        selectMonths: true, // Creates a dropdown to control month
+                        selectYears: 15 // Creates a dropdown of 15 years to control year
+                    });
+                    //restoring tooltip functionality
+                    $('.tooltipped').tooltip({
+                        delay: 50
+                    });
+                })
             } else {
-               alert('In order to update this entry you need to provide a date after '+ consumable['S.L.E Date'] );
+                alert('In order to update this entry you need to provide a date after ' + consumable['S.L.E Date']);
             }
         },
         deleteConsumable: function () {
@@ -442,7 +446,7 @@ Vue.component('consumable-app', {
             this.mode = data.updateMode;
             this.editIndex = data.updateIndex;
             this.id = data.updateId;
-            if(this.mode === "delete"){
+            if (this.mode === "delete") {
                 this.deleteConsumable();
             }
         }
@@ -532,41 +536,41 @@ Vue.component('pol-app', {
             let pol = DB.pols.findOne({
                 _id: this.id
             });
-            if(Date.parse(pol['S.L.E Date']) < Date.parse(polsForm.sle.value) ){
+            if (Date.parse(pol['S.L.E Date']) < Date.parse(polsForm.sle.value)) {
                 pol.location = polsForm.location.value;
-            pol['GRN#'] = polsForm.grn.value;
-            pol['S.L.E Date'] = polsForm.sle.value;
-            let history = {
-                'Date Updated': formatDate(new Date()),
-                location: pol.location,
-                'GRN#': pol['GRN#'],
-                'S.L.E Date': pol['S.L.E Date']
-            };
-            pol.historyArr.push(history);
-            DB.pols.update({
-                _id: this.id
-            }, pol, {
-                multi: false,
-                upsert: false
-            });
-            this.pols = highlightNSortDueItems(DB.pols.find(), 'S.L.E Date');
+                pol['GRN#'] = polsForm.grn.value;
+                pol['S.L.E Date'] = polsForm.sle.value;
+                let history = {
+                    'Date Updated': formatDate(new Date()),
+                    location: pol.location,
+                    'GRN#': pol['GRN#'],
+                    'S.L.E Date': pol['S.L.E Date']
+                };
+                pol.historyArr.push(history);
+                DB.pols.update({
+                    _id: this.id
+                }, pol, {
+                    multi: false,
+                    upsert: false
+                });
+                this.pols = highlightNSortDueItems(DB.pols.find(), 'S.L.E Date');
 
-            $('.tooltipped').tooltip('remove'); //Tooltip kept showing constatly after the form was replaced, so removed it.
-            this.mode = "";
-            this.id = "";
-            this.$nextTick(function () {
-                $('.datepicker').pickadate({
-                    closeOnSelect: true,
-                    selectMonths: true, // Creates a dropdown to control month
-                    selectYears: 15 // Creates a dropdown of 15 years to control year
-                });
-                //restoring tooltip functionality
-                $('.tooltipped').tooltip({
-                    delay: 50
-                });
-            })
-            } else{
-                alert('In order to update this entry you need to provide a date after '+ pol['S.L.E Date'] );
+                $('.tooltipped').tooltip('remove'); //Tooltip kept showing constatly after the form was replaced, so removed it.
+                this.mode = "";
+                this.id = "";
+                this.$nextTick(function () {
+                    $('.datepicker').pickadate({
+                        closeOnSelect: true,
+                        selectMonths: true, // Creates a dropdown to control month
+                        selectYears: 15 // Creates a dropdown of 15 years to control year
+                    });
+                    //restoring tooltip functionality
+                    $('.tooltipped').tooltip({
+                        delay: 50
+                    });
+                })
+            } else {
+                alert('In order to update this entry you need to provide a date after ' + pol['S.L.E Date']);
             }
         },
         deletePol: function () {
@@ -618,7 +622,7 @@ Vue.component('pol-app', {
             this.mode = data.updateMode;
             this.editIndex = data.updateIndex;
             this.id = data.updateId;
-            if(this.mode === "delete"){
+            if (this.mode === "delete") {
                 this.deletepol();
             }
         }
@@ -628,7 +632,7 @@ Vue.component('pol-app', {
 Vue.component('dashboard-app', {
     template: '#dashboard-app',
     props: ['dbLoc'],
-    data: function(){
+    data: function () {
         return {
             tools: remainingDays(DB.tools.find(), 'Due Date'),
             consumables: remainingDays(DB.consumables.find(), 'S.L.E Date'),
@@ -641,14 +645,16 @@ Vue.component('dashboard-app', {
             this.app = app;
             this.$emit('changeapp', app);
         },
-        getDir: function() {
+        getDir: function () {
             let file = document.getElementById('file');
             strFile = file.value;
             intPos = strFile.lastIndexOf("\\");
             strDirectory = strFile.substring(0, intPos);
             arr = strDirectory.split(';');
-            dir = arr[arr.length-1].replace(/\\/g, "/");
-            DbLocation.dbLoc.save({dir: dir});
+            dir = arr[arr.length - 1].replace(/\\/g, "/");
+            DbLocation.dbLoc.save({
+                dir: dir
+            });
             location.reload();
         }
     }
@@ -691,7 +697,7 @@ Vue.component('tool-table', {
                 })
             }
             if (sortKey) {
-                if(sortKey === 'Calibration Date' || sortKey === 'Due Date' || sortKey === 'S.L.E Date') {
+                if (sortKey === 'Calibration Date' || sortKey === 'Due Date' || sortKey === 'S.L.E Date') {
                     data = data.sort(function (a, b) {
                         a = Date.parse(a[sortKey]);
                         b = Date.parse(b[sortKey]);
@@ -699,10 +705,10 @@ Vue.component('tool-table', {
                     })
                 } else {
                     data = data.sort(function (a, b) {
-                    a = a[sortKey]
-                    b = b[sortKey]
-                    return (a === b ? 0 : a > b ? 1 : -1) * order
-                })
+                        a = a[sortKey]
+                        b = b[sortKey]
+                        return (a === b ? 0 : a > b ? 1 : -1) * order
+                    })
                 }
 
             }
@@ -822,6 +828,14 @@ var app = new Vue({
         }
     }
 });
+app.$nextTick(function () {
+    $('.modal').modal();
+});
+
+//Open external URLs using NW.js Shell.
+function openUrl(url) {
+    gui.Shell.openExternal(url);
+}
 
 function Print() {
     $('.tooltipped').tooltip('remove');
@@ -830,7 +844,6 @@ function Print() {
         delay: 50
     });
 }
-
 $(document).ready(function () {
     $('.datepicker').pickadate({
         closeOnSelect: true,

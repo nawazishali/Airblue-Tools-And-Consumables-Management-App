@@ -5,38 +5,39 @@
     <title>Airblue Tools Management App</title>
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href='./css/materialize.min.css' rel="stylesheet" type="text/css">
-    <link href="./css/transitions.css" rel="stylesheet" type="text/css">
+    <link href="./css/styles.css" rel="stylesheet" type="text/css">
 
 </head>
 
 <body>
     <div id=app>
-    <header>
-        <!-- Dropdown Structure -->
-        <ul id="dropdown1" class="dropdown-content">
-            <li><a href="#!" @click='changeApp("tool-app")'>Tools</a></li>
-            <li><a href="#!" @click='changeApp("pol-app")'>P.O.L</a></li>
-            <li><a href="#!" @click='changeApp("consumable-app")'>Consumables</a></li>
-        </ul>
-        <div class="navbar-fixed">
-            <nav>
-                <div class="nav-wrapper white darken-4">
-                    <a href="#!" class="brand-logo right"><span style="color: #828282; font-weight: 200;">air</span><span style="color: #252f86; font-weight: 800;">blue</span></a>
-                    <ul class="left">
-                        <!-- Dropdown Trigger -->
-                        <li><a style="color: #252f86;" href="#!" @click='changeApp("dashboard-app")'>DASHBOARD</a></li>
-                        <li><a style="color: #252f86;" class="dropdown-button" href="#!" data-activates="dropdown1">CATEGORY<i class="material-icons right">arrow_drop_down</i></a></li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </header>
+        <header>
+            <!-- Dropdown Structure -->
+            <ul id="dropdown1" class="dropdown-content">
+                <li><a href="#!" @click='changeApp("tool-app")'>Tools</a></li>
+                <li><a href="#!" @click='changeApp("pol-app")'>P.O.L</a></li>
+                <li><a href="#!" @click='changeApp("consumable-app")'>Consumables</a></li>
+            </ul>
+            <div class="navbar-fixed">
+                <nav>
+                    <div class="nav-wrapper white darken-4">
+                        <a href="#!" class="brand-logo right"><span style="color: #828282; font-weight: 200;">air</span><span style="color: #252f86; font-weight: 800;">blue</span></a>
+                        <ul class="left">
+                            <!-- Dropdown Trigger -->
+                            <li><a style="color: #252f86;" href="#!" @click='changeApp("dashboard-app")'>DASHBOARD</a></li>
+                            <li><a style="color: #252f86;" class="dropdown-button" href="#!" data-activates="dropdown1">CATEGORY<i class="material-icons right">arrow_drop_down</i></a></li>
+                            <li><a style="color: #252f86;" href="#about" >ABOUT</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </header>
 
-    <main>
-        <transition name="slide-fade" mode="out-in">
-            <component :is="app" :db-loc="dbLoc" @changeapp="changeApp"></component>
-        </transition>
-    </main>
+        <main>
+            <transition name="slide-fade" mode="out-in">
+                <component :is="app" :db-loc="dbLoc" @changeapp="changeApp"></component>
+            </transition>
+        </main>
     </div>
     <template id="dashboard-app">
         <div v-if="(typeof dbLoc) === 'undefined'">
@@ -103,7 +104,7 @@
     <template id="tool-app">
 
         <div class="row">
-            <div class="col s3">
+            <div class="col s2">
                 <div class="card-panel">
                     <div class="card-content">
                         <div class="row">
@@ -123,8 +124,8 @@
                                         <label for="due-dt">Due date</label>
                                     </div>
                                     <div class="input-field">
-                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Update & Save"><i class="material-icons">update</i></button>
-                                        <a @click="cancel()" class="btn-large waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
+                                        <button type="submit" class="btn waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Update & Save"><i class="material-icons">update</i></button>
+                                        <a @click="cancel()" class="btn waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
                                     </div>
                                 </div>
                             </form>
@@ -155,8 +156,8 @@
                                         <label for="due-dt">Due date</label>
                                     </div>
                                     <div class="input-field">
-                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Edit & Save"><i class="material-icons">mode_edit</i></button>
-                                        <a @click="cancel()" class="btn-large waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
+                                        <button type="submit" class="btn waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Edit & Save"><i class="material-icons">mode_edit</i></button>
+                                        <a @click="cancel()" class="btn waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
                                     </div>
                                 </div>
                             </form>
@@ -187,8 +188,8 @@
                                         <label for="due-dt">Due date</label>
                                     </div>
                                     <div class="input-field">
-                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Add new Tool"><i class="material-icons">add</i></button>
-                                        <button type="reset" class="btn-large waves-effect tooltipped" data-position="top" data-delay="50" data-tooltip="Reset Form"><i class="material-icons">clear_all</i></button>
+                                        <button type="submit" class="btn waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Add new Tool"><i class="material-icons">add</i></button>
+                                        <button type="reset" class="btn waves-effect tooltipped" data-position="top" data-delay="50" data-tooltip="Reset Form"><i class="material-icons">clear_all</i></button>
                                     </div>
                                 </div>
                             </form>
@@ -196,7 +197,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col s9">
+            <div class="col s10">
                 <div class="card-panel printable" style="background-color: #252f86;">
                     <div class="card-content">
                         <h5 class="center-align" style="color: white; background-color: #252f86;">{{heading}}</h5>
@@ -232,7 +233,7 @@
                                     <hr></hr>
                                     <h5 class="center-align">PN: {{tools[editIndex].partnumber}} &emsp;&emsp; SN: {{tools[editIndex]['ABQ SNo.']}}</h5>
                                 </div>
-                                <div class="card-panel">
+                                <div class="card-panel overflow-control">
                                     <table class="highlight bordered centered">
                                         <thead>
                                             <tr>
@@ -265,7 +266,7 @@
     <template id="consumable-app">
 
         <div class="row">
-            <div class="col s3">
+            <div class="col s2">
                 <div class="card-panel">
                     <div class="card-content">
                         <div class="row">
@@ -277,6 +278,10 @@
                                         <label for="location">Location</label>
                                     </div>
                                     <div class="input-field">
+                                        <input v-bind:value="consumables[editIndex]['Batch#']" id="batch" type="text" class="" name="batch">
+                                        <label for="batch">Batch#</label>
+                                    </div>
+                                    <div class="input-field">
                                         <input v-bind:value="consumables[editIndex]['P.O']" id="po" type="text" class="" name="po">
                                         <label for="po">P.O</label>
                                     </div>
@@ -285,8 +290,8 @@
                                         <label for="sle">S.L.E Date</label>
                                     </div>
                                     <div class="input-field">
-                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Update & Save"><i class="material-icons">update</i></button>
-                                        <a @click="cancel()" class="btn-large waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
+                                        <button type="submit" class="btn waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Update & Save"><i class="material-icons">update</i></button>
+                                        <a @click="cancel()" class="btn waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
                                     </div>
                                 </div>
                             </form>
@@ -317,8 +322,8 @@
                                         <label for="sle">S.L.E Date</label>
                                     </div>
                                     <div class="input-field">
-                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Edit & Save"><i class="material-icons">mode_edit</i></button>
-                                        <a @click="cancel()" class="btn-large waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
+                                        <button type="submit" class="btn waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Edit & Save"><i class="material-icons">mode_edit</i></button>
+                                        <a @click="cancel()" class="btn waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
                                     </div>
                                 </div>
                             </form>
@@ -349,8 +354,8 @@
                                         <label for="sle">S.L.E Date</label>
                                     </div>
                                     <div class="input-field">
-                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Add new consumable"><i class="material-icons">add</i></button>
-                                        <button type="reset" class="btn-large waves-effect tooltipped" data-position="top" data-delay="50" data-tooltip="Reset Form"><i class="material-icons">clear_all</i></button>
+                                        <button type="submit" class="btn waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Add new consumable"><i class="material-icons">add</i></button>
+                                        <button type="reset" class="btn waves-effect tooltipped" data-position="top" data-delay="50" data-tooltip="Reset Form"><i class="material-icons">clear_all</i></button>
                                     </div>
                                 </div>
                             </form>
@@ -358,7 +363,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col s9">
+            <div class="col s10">
                 <div class="card-panel printable" style="background-color: #252f86;">
                     <div class="card-content">
                         <h5 class="center-align" style="color: white; background-color: #252f86;">{{heading}}</h5>
@@ -394,7 +399,7 @@
                                     <hr></hr>
                                     <h5 class="center-align">PN: {{consumables[editIndex].partnumber}} &emsp;&emsp; Batch#: {{consumables[editIndex]['Batch#']}}</h5>
                                 </div>
-                                <div class="card-panel">
+                                <div class="card-panel overflow-control">
                                     <table class="highlight bordered centered">
                                         <thead>
                                             <tr>
@@ -427,7 +432,7 @@
     <template id="pol-app">
 
         <div class="row">
-            <div class="col s3">
+            <div class="col s2">
                 <div class="card-panel">
                     <div class="card-content">
                         <div class="row">
@@ -447,8 +452,8 @@
                                         <label for="sle">S.L.E Date</label>
                                     </div>
                                     <div class="input-field">
-                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Update & Save"><i class="material-icons">update</i></button>
-                                        <a @click="cancel()" class="btn-large waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
+                                        <button type="submit" class="btn waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Update & Save"><i class="material-icons">update</i></button>
+                                        <a @click="cancel()" class="btn waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
                                     </div>
                                 </div>
                             </form>
@@ -475,8 +480,8 @@
                                         <label for="sle">S.L.E Date</label>
                                     </div>
                                     <div class="input-field">
-                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Edit & Save"><i class="material-icons">mode_edit</i></button>
-                                        <a @click="cancel()" class="btn-large waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
+                                        <button type="submit" class="btn waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Edit & Save"><i class="material-icons">mode_edit</i></button>
+                                        <a @click="cancel()" class="btn waves-effect orange darken-1 tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Cancel"><i class="material-icons">cancel</i></a>
                                     </div>
                                 </div>
                             </form>
@@ -503,8 +508,8 @@
                                         <label for="sle">S.L.E Date</label>
                                     </div>
                                     <div class="input-field">
-                                        <button type="submit" class="btn-large waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Add new pol"><i class="material-icons">add</i></button>
-                                        <button type="reset" class="btn-large waves-effect tooltipped" data-position="top" data-delay="50" data-tooltip="Reset Form"><i class="material-icons">clear_all</i></button>
+                                        <button type="submit" class="btn waves-effect tooltipped center-align" data-position="top" data-delay="50" data-tooltip="Add new pol"><i class="material-icons">add</i></button>
+                                        <button type="reset" class="btn waves-effect tooltipped" data-position="top" data-delay="50" data-tooltip="Reset Form"><i class="material-icons">clear_all</i></button>
                                     </div>
                                 </div>
                             </form>
@@ -512,7 +517,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col s9">
+            <div class="col s10">
                 <div class="card-panel printable" style="background-color: #252f86;">
                     <div class="card-content">
                         <h5 class="center-align" style="color: white;">{{heading}}</h5>
@@ -548,7 +553,7 @@
                                     <hr></hr>
                                     <h5 class="center-align">PN: {{pols[editIndex].partnumber}} &emsp;&emsp; SN: {{pols[editIndex]['GRN#']}}</h5>
                                 </div>
-                                <div class="card-panel">
+                                <div class="card-panel overflow-control">
                                     <table class="highlight bordered centered">
                                         <thead>
                                             <tr>
@@ -608,6 +613,21 @@
         </table>
     </template>
 
+    <!--About Modal -->
+    <div id="about" class="modal">
+        <div class="modal-content center-align">
+            <h1>About</h1>
+            <h4><span style="color: #828282; font-weight: 200;">air</span><span style="color: #252f86; font-weight: 800;">blue</span> Shelf Life Management App</h4>
+            <p>Release Version 1.0.0
+                <br> Release Date: Thu Jul 06 2017
+                <br> Released under MIT license & is free to use and copy.</p>
+            <p>Airblue's Logo is a registered Trademark & All Rights reserved by it's owners</p>
+            <p>Made with &hearts; Using JavaScript & Vue.Js 2 by: <a href="javascript:;" onclick="openUrl('https://nawazishali.github.io')">Nawazish Ali</a> </p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
 
 
     <script type="text/javascript" src="js-libraries/jquery-2.2.3.min.js"></script>
