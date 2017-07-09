@@ -825,10 +825,13 @@ var app = new Vue({
 
             })
         },
-        updateDbLoc: function (){
-            DbLocation.dbLoc.remove();
-            DbLocation = DB.connect('./db', ['dbLoc']);
-            this.dbLoc = DbLocation.dbLoc.findOne();
+        updateDbLoc: function () {
+            let confirmDbUpdate = confirm('Are you sure you want to change Database Location? \n(Note: Previous Location will be forgotten if you press OK)');
+            if (confirmDbUpdate) {
+                DbLocation.dbLoc.remove();
+                DbLocation = DB.connect('./db', ['dbLoc']);
+                this.dbLoc = DbLocation.dbLoc.findOne();
+            }
         }
     }
 });

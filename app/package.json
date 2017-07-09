@@ -21,7 +21,8 @@
     "height": 600,
     "min_width": 1200,
     "min_height": 600,
-    "title": "Airblue Tools & Consumables Management App",
+    "title": "Airblue Shelf Life Control App",
+      "icon": "icon/icon.png",
     "toolbar": true
   }
 }
